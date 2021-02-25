@@ -20,7 +20,7 @@ function startPage(){
 
 let contentDiv;
 function startGame(){
- console.log('startgame func');
+ //console.log('start game func');
  let section = document.createElement('section');
  let aside = document.createElement('aside');
  aside.classList.add('rightPanel');
@@ -38,6 +38,7 @@ const worldHeightInTiles = 20;
 const worldWidthtInTiles = 30;
 //let aRow,aColumn;
 function drawMatrix(){
+ let aTile;
  for(let i=0; i<worldHeightInTiles; i++){
   aRow = document.createElement('div');
   aRow.classList.add('aRow');
@@ -45,18 +46,40 @@ function drawMatrix(){
   for(let j=0; j<worldWidthtInTiles; j++ ){
    aColumn = document.createElement('span');
    aColumn.classList.add('tile');
-   aColumn.innerText = `${i +' , '+ j }`;   
+   //aColumn.innerText = `${(i+1)+','+(j+1)}`;   
    aRow.insertAdjacentElement('afterbegin',aColumn);
-  }
- }
- let aTile = document.querySelector('.tile');
- aTile.setAttribute('data-id','');
+   aTile = document.querySelector('.tile');
+   aTile.setAttribute('data-row_id',`${(i+1)}`);
+   aTile.setAttribute('data-col_id',`${(j+1)}`);   
+  }  
+ } 
 }
 
+let row_idArray=[];//the array
+
+function drawSoil(){ 
+ row_idArray= [...document.querySelectorAll(`[data-row_id]`)];//all tiles in an array
+ console.log(row_idArray, row_idArray.length);
+
+ for(let i=450; i<row_idArray.length;i++){
+  row_idArray[i].classList.add('soil');
+ }
+
+ document.querySelector('.content').addEventListener('click',(e)=>{     //log the row and col
+  console.log(`row: ${e.target.dataset.row_id}`,`col: ${e.target.dataset.col_id}`);  
+ });
+
+}
+function drawGrass(){
+ for(let i=420; i<450;i++){
+  row_idArray[i].classList.add('grass');
+ }
+}
 
 
 /********FUNCTIONS**************/
 //startPage(); should be enabled by default
 startGame();
-
+drawSoil();
+drawGrass();
 //drawMatrix(); //draw main matrix
