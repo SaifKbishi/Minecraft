@@ -77,12 +77,17 @@ body{
  border: 2px solid #333;
  margin: 5% 27%;
 }
+.toolsTileClicked{
+ border: 2px solid blue;
+}
+
 .inventoryTile{
  width: 20px;
  height: 20px;
  border: 1px solid #333;
  margin: 5% 38%;
 }
+
 .axe{
  background: url('images/Axe.png') no-repeat center center/cover;
  background-size: 35px;
@@ -112,3 +117,31 @@ body{
  background: url('images/wood.png') no-repeat center center/cover;
 }
 
+
+
+
+
+
+/*responsive*/
+@media (max-width: 400px) {
+ .main{
+  flex-direction: column;
+ }
+ .content{
+  height: 94vh;
+  width: 100vw;
+ }
+ .rightPanel{
+  display: flex;
+  width: 100%;
+  height: 50px;
+ }
+ .resetDiv,.toolsTile,.inventoryTile{
+  width: 25px;
+  margin: 7px;
+ }
+ .tile{
+  height: 4.99vh;
+  width: 4vw;
+ }
+}
