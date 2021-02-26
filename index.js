@@ -4,6 +4,8 @@ const numOfTiles =600;
 const worldHeightInTiles = 20;
 const worldWidthtInTiles = 30;
 let contentDiv;
+let aside;
+let rightPanel;
 let row_idArray=[];//the array
 let tileNumber;
 let headOfCloud=530;
@@ -15,6 +17,7 @@ let rockStart = 198;
 /********FUNCTIONS**************/
 //startPage(); should be enabled by default
 startGame();
+toolsAndInventory();
 getArray_info();
 drawSoil();
 drawGrass();
@@ -44,10 +47,9 @@ function startPage(){
  });
 }
 
-function startGame(){
- //console.log('start game func');
+function startGame(){ 
  let section = document.createElement('section');
- let aside = document.createElement('aside');
+ aside = document.createElement('aside');
  aside.classList.add('rightPanel');
  //let contentDiv = document.createElement('div');
  contentDiv = document.createElement('div');
@@ -57,6 +59,28 @@ function startGame(){
  section.insertAdjacentElement('afterbegin',contentDiv);
  section.insertAdjacentElement('afterend',aside);
  drawMatrix();//draw main matrix
+}
+
+function toolsAndInventory(){
+ let inventoryDiv = document.createElement('div');
+ aside.insertAdjacentElement('afterbegin',inventoryDiv);
+ inventoryDiv.classList.add('inventoryDiv','inventoryTile');
+ 
+ let pickaxeDiv = document.createElement('div');
+ pickaxeDiv.classList.add('pickaxe','toolsTile');
+ aside.insertAdjacentElement('afterbegin',pickaxeDiv);
+
+ let ShovelDiv = document.createElement('div');
+ aside.insertAdjacentElement('afterbegin',ShovelDiv);
+ ShovelDiv.classList.add('shovel','toolsTile');
+
+ let AxeDiv = document.createElement('div');
+ aside.insertAdjacentElement('afterbegin',AxeDiv);
+ AxeDiv.classList.add('axe','toolsTile');
+ 
+ let resetDiv = document.createElement('div');
+ aside.insertAdjacentElement('afterbegin',resetDiv);
+ resetDiv.classList.add('resetDiv');
 }
 
 function drawMatrix(){
@@ -166,7 +190,7 @@ function getArray_info(){
  document.querySelector('.content').addEventListener('click',(e)=>{     //log the row and col
   console.log(`row: ${e.target.dataset.row_id}`,`col: ${e.target.dataset.col_id}`);  
   
-  if(shovel && e.target.classList.contains('grass')){
+  if(shovel && e.target.classList.contains('grass')){  //removing Grass
    e.target.classList.remove('grass');
    console.log('grass tile is removed from getArray_info');
    if(tilesInventory.length >=1){
@@ -174,7 +198,7 @@ function getArray_info(){
     tilesInventory.push('grass');
     console.log('tilesInventory:',tilesInventory);
    }
-  } 
+  } //removing Grass - END
 
 
   tileNumber = `${e.target.dataset.id}`;

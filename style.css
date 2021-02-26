@@ -65,10 +65,27 @@ body{
 .hidden{
  visibility: hidden;
 }
-
-
+.resetDiv{
+ width: 50px;
+ height: 15px;
+ border: 2px solid #333;
+ margin: 5% 17%;
+}
+.toolsTile{
+ width: 35px;
+ height: 35px;
+ border: 2px solid #333;
+ margin: 5% 27%;
+}
+.inventoryTile{
+ width: 20px;
+ height: 20px;
+ border: 1px solid #333;
+ margin: 5% 38%;
+}
 .axe{
  background: url('images/Axe.png') no-repeat center center/cover;
+ background-size: 35px;
 }
 .cloud{
  background: url('images/cloud.png') no-repeat center center/cover;
@@ -85,7 +102,7 @@ body{
 .rock{
  background: url('images/rock.png') no-repeat center center/cover;
 }
-.Shovel{
+.shovel{
  background: url('images/Shovel.png') no-repeat center center/cover;
 }
 .soil{
