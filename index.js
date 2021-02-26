@@ -7,6 +7,9 @@ let contentDiv;
 let row_idArray=[];//the array
 let tileNumber;
 let headOfCloud=530;
+let tilesInventory =[1];
+let treeStart = 183;
+let rockStart = 198;
 /********end of global variables **************/
 
 /********FUNCTIONS**************/
@@ -15,8 +18,9 @@ startGame();
 getArray_info();
 drawSoil();
 drawGrass();
-//drawTree();
+drawTree();
 drawCloud();
+drawRocks();
 removeATile();
 //drawMatrix(); //draw main matrix
 /******END***OF***FUNCTIONS**************/
@@ -75,26 +79,6 @@ function drawMatrix(){
  } 
 }
 
-
-/*insert all tiles in an array and event listener */
-function getArray_info(){
- document.querySelector('.content').addEventListener('click',(e)=>{     //log the row and col
-  console.log(`row: ${e.target.dataset.row_id}`,`col: ${e.target.dataset.col_id}`);  
-  
-  if(shovel && e.target.classList.contains('grass')){
-   e.target.classList.remove('grass');
-   console.log('grass tile is removed from getArray_info');
-  } 
-
-
-  tileNumber = `${e.target.dataset.id}`;
-  console.log('tileNumber:',tileNumber);
-  //return tileNumber;
- }); 
- row_idArray= [...document.querySelectorAll(`[data-id]`)];//all tiles in an array
- console.log(row_idArray);
-}
-
 function drawSoil(){ 
  for(let i=(numOfTiles-150); i<row_idArray.length;i++){
   row_idArray[i].classList.add('soil');
@@ -120,6 +104,41 @@ function drawCloud(){
  }
 }
 
+function drawTree(){ //let treeStart = 187;
+ if(treeStart>=182 && treeStart <=209){
+  //draw treelog
+  for(let i=treeStart; i<=treeStart+60; i+=30){
+   row_idArray[numOfTiles-i].classList.add('wood'); 
+   row_idArray[numOfTiles-i].classList.add('wood');
+  }
+  //draw treeleaves   
+   for(let i=treeStart+149; i<=treeStart+151; i++){
+    row_idArray[numOfTiles-i].classList.add('leaves');
+    row_idArray[numOfTiles-i].classList.add('leaves');
+   }
+    for(let i=treeStart+119; i<=treeStart+121; i++){
+    row_idArray[numOfTiles-i].classList.add('leaves');
+    row_idArray[numOfTiles-i].classList.add('leaves');
+   }
+    for(let i=treeStart+89; i<=treeStart+91; i++){
+    row_idArray[numOfTiles-i].classList.add('leaves');
+    row_idArray[numOfTiles-i].classList.add('leaves');
+   } 
+ }else{
+  console.log('You cannot plant a tree there');
+ }
+}
+
+function drawRocks(){//rockStart =205
+ if(rockStart>=181 && rockStart <=207){
+  for(let i=rockStart; i<=rockStart+2; i++){
+   row_idArray[numOfTiles-i].classList.add('rock');
+   row_idArray[numOfTiles-i].classList.add('rock');
+  } 
+ } 
+}
+
+
 function removeATile(){
  document.querySelector('.content').addEventListener('click',(e)=>{     //log the row and col
   //console.log(`row: ${e.target.dataset.row_id}`,`col: ${e.target.dataset.col_id}`);  
@@ -127,17 +146,40 @@ function removeATile(){
   //console.log(`${e.target.classList}`);
   let DT = `${e.target.dataset.type}`;
   let TType =`${e.target.classList}`;
-  console.log('TType:',TType, 'TType type: ',typeof(TType)); //TType is  string
+  //console.log('TType:',TType, 'TType type: ',typeof(TType)); //TType is  string
  });
 }
 
 /**Grass */
-let shovel = 1;
-let grassArray = document.querySelector('.grass');
+/*let grassArray = document.querySelector('.grass');
 grassArray.parentElement.addEventListener('click',(e)=>{ 
  console.log('classlist');
- /*if(shovel && e.target.classList.contains('grass')){
+ if(shovel && e.target.classList.contains('grass')){
   e.target.classList.remove('grass');
   console.log('grass tile is removed');
- } */
-});
+ } 
+});*/
+
+let shovel = 1;
+/*insert all tiles in an array and event listener */
+function getArray_info(){
+ document.querySelector('.content').addEventListener('click',(e)=>{     //log the row and col
+  console.log(`row: ${e.target.dataset.row_id}`,`col: ${e.target.dataset.col_id}`);  
+  
+  if(shovel && e.target.classList.contains('grass')){
+   e.target.classList.remove('grass');
+   console.log('grass tile is removed from getArray_info');
+   if(tilesInventory.length >=1){
+    tilesInventory.pop();
+    tilesInventory.push('grass');
+    console.log('tilesInventory:',tilesInventory);
+   }
+  } 
+
+
+  tileNumber = `${e.target.dataset.id}`;
+  console.log('tileNumber:',tileNumber);
+ }); 
+ row_idArray= [...document.querySelectorAll(`[data-id]`)];//all tiles in an array
+ console.log(row_idArray);
+}
