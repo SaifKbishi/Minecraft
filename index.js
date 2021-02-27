@@ -294,6 +294,7 @@ function removeATile(){
   }else{
    //debugger;
    console.log('you CANNOT remove this tile with this tool');
+   console.log(toolInHand.name);
   }
  }); 
 }//removeATile

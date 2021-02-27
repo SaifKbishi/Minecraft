@@ -68,8 +68,10 @@ body{
 .resetDiv {
  width: 65%;
  height: 5%;
+ min-height: 35px;
+ min-width: 115px;
  border: 5px solid #333;
- margin: 5% 17%;
+ margin: 5%;
 }
 .resetBtn {
  font-size: 1.5;
@@ -79,6 +81,7 @@ body{
 .toolsTile {
  width: 65%;
  height: 13%;
+ min-height: 80px;
  border: 2px solid #333;
  margin: 5% 17%;
 }
