@@ -187,7 +187,7 @@ function drawRocks(){//rockStart =205
   } 
  } 
 }
-function handleInventory(){ 
+function handleInventory(){
  tools.forEach(tool => allTools.push(tool.name));
  document.querySelector(".rightPanel").addEventListener('click',(e)=>{
   console.log(e.target.dataset.type + ' is picked');  
@@ -206,7 +206,7 @@ function handleInventory(){
    });   
   }
   //if tileInInv includes any type of tiles
-  if(tileTypes.includes((e.target.dataset.type))){   
+  if(tileTypes.includes((e.target.dataset.type))){
    console.log('now you can use this tile');
    //remove the tile from inventory
    //document.querySelector('.inventoryTile').setAttribute('data-type',e.target.dataset.type);
@@ -220,13 +220,13 @@ function handleInventory(){
 }//handleInventory
 
 function removeATile(){
- document.querySelector('.content').addEventListener('click',(e)=>{
-  //console.log(`row: ${e.target.dataset.row_id}`,`col: ${e.target.dataset.col_id}`);
+ document.querySelector('.content').addEventListener('click',(e)=>{  
+  console.log('still listening to remove a tile');
   tileNumber = `${e.target.dataset.id}`;
   console.log('tileNumber:',tileNumber);
   console.log(e.target.dataset.type+ ' clicked');
   //if tile has type && tool in Hand can remove it
-  if(e.target.dataset.type && toolInHand.usedFor.includes(e.target.dataset.type)){   
+  if(e.target.dataset.type && toolInHand.usedFor.includes(e.target.dataset.type)){
    console.log('we have a tool in hand and a tile that we can move');
    //check if we can remove the tile (nothing above it)
    //canRemoveTile(e);
@@ -236,9 +236,11 @@ function removeATile(){
    //console.log('col index: ', selectedTileIndex );
    //console.log(rowAboveSelecedTile.children[30-selectedTileIndex]);
    let tileAboveType = rowAboveSelecedTile.children[30-selectedTileIndex].dataset.type;
+   //debugger;
    if(tileAboveType == undefined){
     console.log('you can remove this tile');
     e.target.classList.remove(e.target.dataset.type);
+    //e.target.removeAttribute('data-type');//15:57
      if(tilesInInventory.length >=1){ //update inventory
       console.log('tilesInInventory: ',tilesInInventory);
       inventoryDiv.classList.remove(tilesInInventory[0]);
@@ -248,18 +250,22 @@ function removeATile(){
       document.querySelector('.inventoryTile').classList.add(e.target.dataset.type);
       document.querySelector('.inventoryTile').setAttribute('data-type',e.target.dataset.type);
       //moveATileBackToWorld();
+     }else{
+      tilesInInventory.push(e.target.dataset.type);
+      console.log('tilesInInventory:',tilesInInventory);
+      document.querySelector('.inventoryTile').classList.add(e.target.dataset.type);
+      document.querySelector('.inventoryTile').setAttribute('data-type',e.target.dataset.type);
      }
    }else{
     console.log('you CANNOT remove this tile');
     //need to implement animation for a tile to blink
    }
-
+   e.target.removeAttribute('data-type');//15:57
   }
  }); 
 }//removeATile
 
-function moveATileBackToWorld(){
- 
+function moveATileBackToWorld(){ 
  let tileInHand = tilesInInventory.pop();
  console.log('tileInHand: ',tileInHand);
  document.querySelector('.content').addEventListener('click',(e)=>{
@@ -276,7 +282,4 @@ function moveATileBackToWorld(){
    //handleInventory();
   }
  });
- return;
 }
-removeATile();
-handleInventory();
