@@ -12,7 +12,8 @@
   //const upper part and lower part for array for inventory  
 //object to include the tools: name, image, capablities  
 //function to remove a tile from the world if the tile is valid to be removed and place it in inventory  
-//function to check if removing a tile is valid (called from one above)
+//function to check if removing a tile is valid (called when removing)
+//function to check if palcing a tile is valid
 //function to place an item from inventory in the world  
 //responsive design  
 //function to reset the game  

@@ -117,7 +117,7 @@ function drawToolsAndInventory(){
 }
 
 function drawMatrix(){
- let k=1;
+ let k=599;
  let aTile;
  for(let i=0; i<worldHeightInTiles; i++){
   aRow = document.createElement('div');
@@ -130,8 +130,10 @@ function drawMatrix(){
    aRow.insertAdjacentElement('afterbegin',aColumn);
    aTile = document.querySelector('.tile');
    //aTile.setAttribute('data-row_id',`${(i+1)}`);
-   //aTile.setAttribute('data-col_id',`${(j+1)}`);
-   aTile.setAttribute('data-id',`${k++}`);
+   aTile.setAttribute('data-col_id',`${(j+1)}`);
+   aTile.innerText= k;
+   aTile.setAttribute('data-id',`${k--}`);
+   
   }
  } 
 }
@@ -217,7 +219,6 @@ function handleInventory(){
  });
 }
 
-/*insert all tiles in an array and event listener */
 function removeATile(){
  document.querySelector('.content').addEventListener('click',(e)=>{     
   //console.log(`row: ${e.target.dataset.row_id}`,`col: ${e.target.dataset.col_id}`);
@@ -225,16 +226,47 @@ function removeATile(){
   console.log('tileNumber:',tileNumber);
   console.log(e.target.dataset.type+ ' clicked');
   //if tile has type && tool in Hand can remove it
-  if(e.target.dataset.type && toolInHand.usedFor.includes(e.target.dataset.type)){
+  if(e.target.dataset.type && toolInHand.usedFor.includes(e.target.dataset.type)){   
    console.log('we have a tool in hand and a tile that we can move');
    //check if we can remove the tile (nothing above it)
-   //console.log(`the tile Number: ${ Number(tileNumber)} has above it: ${Number(tileNumber)-30} `);   
-debugger;
-   if((row_idArray[Number(tileNumber)-30]).dataset.type === ''){
-    console.log(`the tile Number: ${ Number(tileNumber)} has above it: ${Number(tileNumber)-30} `);  
-
+   //canRemoveTile(e);
+   let tileIndex = e.target.dataset.col_id;
+   let selectedTileParent = e.target.parentElement;
+   let rowAboveSelecedTile = selectedTileParent.previousElementSibling;
+   //console.log('col index: ', tileIndex );
+   //console.log(rowAboveSelecedTile.children[30-tileIndex]);
+   let tileAboveType = rowAboveSelecedTile.children[30-tileIndex].dataset.type;
+   if(tileAboveType == undefined){
+    console.log('you can remove this tile');
+    e.target.classList.remove(e.target.dataset.type);
+     if(tilesInInventory.length >=1){ //update inventory
+      console.log('tilesInInventory: ',tilesInInventory);
+      inventoryDiv.classList.remove(tilesInInventory[0]);
+      tilesInInventory.pop();
+      tilesInInventory.push(e.target.dataset.type);
+      console.log('tilesInInventory:',tilesInInventory);
+      document.querySelector('.inventoryTile').classList.add(e.target.dataset.type);
+     }
+   }else{
+    console.log('you CANNOT remove this tile');
+    //need to implement animation for a tile to blink
    }
-   e.target.classList.remove(e.target.dataset.type);
+
+  }
+ }); 
+}//removeATile
+
+/*
+function canRemoveTile(e){
+ let tileIndex = e.target.dataset.col_id;
+ let selectedTileParent = e.target.parentElement;
+ let rowAboveSelecedTile = selectedTileParent.previousElementSibling;
+ //console.log('col index: ', tileIndex );
+ //console.log(rowAboveSelecedTile.children[30-tileIndex]);
+ let tileAboveType = rowAboveSelecedTile.children[30-tileIndex].dataset.type;
+ if(tileAboveType == undefined){
+  console.log('you can remove this tile');
+  e.target.classList.remove(e.target.dataset.type);
    if(tilesInInventory.length >=1){ //update inventory
     console.log('tilesInInventory: ',tilesInInventory);
     inventoryDiv.classList.remove(tilesInInventory[0]);
@@ -243,12 +275,8 @@ debugger;
     console.log('tilesInInventory:',tilesInInventory);
     document.querySelector('.inventoryTile').classList.add(e.target.dataset.type);
    }
-  }
- }); 
- //row_idArray= [...document.querySelectorAll(`[data-id]`)];//all tiles in an array
- //console.log(row_idArray);
-}
-
-function canRemoveTile(){
-
-}
+ }else{
+  console.log('you CANNOT remove this tile');
+  //need to implement animation for a tile to blink
+ }
+}*/
