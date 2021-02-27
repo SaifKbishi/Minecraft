@@ -64,36 +64,10 @@ body{
 .hidden{
  display: none;
 }
-.toolsTileClicked{
- border: 2px solid blue;
-}
-/*
-.resetDiv{
- width: 50px;
- height: 17px;
- border: 2px solid #333;
- margin: 5% 17%;
-}
-.resetBtn{
- font-size: 6px;
- width: 100%;
-}
-.toolsTile{
- width: 35px;
- height: 35px;
- border: 2px solid #333;
- margin: 5% 27%;
-}
-.inventoryTile{
- width: 20px;
- height: 20px;
- border: 1px solid #333;
- margin: 5% 38%;
-}*/
 .resetDiv {
  width: 65%;
  height: 5%;
- border: 2px solid #333;
+ border: 5px solid #333;
  margin: 5% 17%;
 }
 .resetBtn {
@@ -112,6 +86,9 @@ body{
  height: 10%;
  border: 1px solid #333;
  margin: 5% 25%;
+}
+.toolsTileClicked{
+ border: 2px solid blue;
 }
 
 .axe{
