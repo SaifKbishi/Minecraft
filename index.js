@@ -4,8 +4,8 @@ const numOfTiles =600;
 const worldHeightInTiles = 20;
 const worldWidthtInTiles = 30;
 const headOfCloud = 530;
-const treeStart01 = Math.floor(Math.random() * (195 - 182) + 182);
-const treeStart02 = Math.floor(Math.random() * (209 - 196) + 196);
+//const treeStart01 = Math.floor(Math.random() * (195 - 182) + 182);
+//const treeStart02 = Math.floor(Math.random() * (209 - 196) + 196);
 const maxNumberOfRocks = 4;
 
 let startBtnDiv;
@@ -19,6 +19,8 @@ let tileNumber;
 let tilesInInventory =[1];
 let toolInHand={};
 let inventoryClasses;
+let treeStart01 = Math.floor(Math.random() * (195 - 182) + 182);
+let treeStart02 = Math.floor(Math.random() * (209 - 196) + 196);
 /********end of global variables **************/
 
 /********Inventory**************/
@@ -79,6 +81,7 @@ function startPage(){
  You can use the Shovel for <i>Grass</i> and <i>Soil</i>.<br>
  You can use the Axe for <i>Leaves</i> and <i>Wood</i>.<br>
  You can use the Pickaxe for <i>Rock</i>.<br>
+ You cannot remove a tile if there is something above it. <br>
  Most important, you <strong>CANNOT</strong> use any tool for anything else besides its purpose.
 </p>`;
  startBtn.insertAdjacentElement('afterend',tutorialDiv);
@@ -147,7 +150,7 @@ function drawToolsAndInventory(){
  resetBtn.value ='Reset World';
  resetBtn.classList.add('resetBtn');
  resetDiv.insertAdjacentElement('afterbegin',resetBtn);
- //resetBtn.addEventListener('click', startPage);
+ document.querySelector('.resetBtn').addEventListener('click', resetWorld);
 }//drawToolsAndInventory
 function drawMatrix(){
  let k=599;
@@ -191,7 +194,7 @@ function drawCloud(){
   row_idArray[i].setAttribute('data-type','cloud');
  }
 }//drawCloud
-function drawTree(root){ //let treeStart = 187;
+function drawTree(root){
  let treeStart = root;
  if(treeStart>=182 && treeStart <=209){
   //draw treelog
@@ -270,7 +273,6 @@ function handleInventory(){
   }
  });
 }//handleInventory
-
 function removeATile(){
  document.querySelector('.content').addEventListener('click',(e)=>{  
   console.log('still listening to remove a tile');
@@ -320,7 +322,6 @@ function removeATile(){
   }
  }); 
 }//removeATile
-
 function moveATileBackToWorld(){ 
  let tileInHand = tilesInInventory.pop();
  console.log('tileInHand: ',tileInHand);
@@ -336,3 +337,33 @@ function moveATileBackToWorld(){
   }
  });
 }//moveATileBackToWorld
+function resetWorld(){
+ console.log('we are in reset World function');
+ let allTiles = document.querySelector('.content');
+ row_idArray.forEach(tile =>{  
+   if(tileTypes.includes(tile.className)){
+    debugger;
+   tile.classList.remove(this);
+   tile.removeAttribute('data-type');
+  }  
+ }); 
+ /*removing rock */
+ let groundRow = allTiles.children[13].children;
+ for(let u=0; u<groundRow.length; u++){
+  groundRow[u].removeAttribute('data-type');
+  groundRow[u].classList.remove('rock');
+ }
+ //clear inventory
+ document.querySelector('.toolsTileClicked').classList.remove('toolsTileClicked');
+ document.querySelector('.inventoryTile').classList = ""; 
+ inventoryDiv.classList.add('inventoryDiv','inventoryTile');
+ document.querySelector('.inventoryTile').removeAttribute('data-type');
+ removeATile();
+ drawSoil();
+ drawGrass();
+ drawTree(treeStart01);
+ drawTree(treeStart02);
+ drawCloud();
+ drawRocks();
+ handleInventory();
+}//resetWorld
