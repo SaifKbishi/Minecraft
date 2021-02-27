@@ -4,12 +4,9 @@ const numOfTiles =600;
 const worldHeightInTiles = 20;
 const worldWidthtInTiles = 30;
 const headOfCloud = 530;
-//const treeStart01 = 183; //must be between tile 182 && 209
-//const treeStart02 = 195; //must be between tile 182 && 209
 const treeStart01 = Math.floor(Math.random() * (195 - 182) + 182);
 const treeStart02 = Math.floor(Math.random() * (209 - 196) + 196);
-const rockStart = Math.floor(Math.random() * (209 - 181) + 181); //198; //must be between tiles 181 && 207
-const numberOfRocks = 3;
+const maxNumberOfRocks = 4;
 
 let contentDiv;
 let inventoryDiv;
@@ -21,8 +18,6 @@ let tileNumber;
 let tilesInInventory =[1];
 let toolInHand={};
 let inventoryClasses;
-//let selectedTileIndex;
-//let selectedTileParent;
 /********end of global variables **************/
 
 /********Inventory**************/
@@ -47,8 +42,52 @@ let tileTypes =['wood','leaves','grass','soil','rock'];
 /*****END***Of***Inventory**************/
 
 /********FUNCTIONS**************/
-//startPage(); should be enabled by default
+//startPage(); //should be enabled by default
 startGame();
+/*drawToolsAndInventory();
+row_idArray= [...document.querySelectorAll(`[data-id]`)];//all tiles in an array
+console.log(row_idArray);
+removeATile();
+drawSoil();
+drawGrass();
+drawTree(treeStart01);
+drawTree(treeStart02);
+drawCloud();
+drawRocks();
+handleInventory();*/
+/******END***OF***FUNCTIONS**************/
+
+function startPage(){
+ main.classList.add('startScreen');
+ let startBtnDiv = document.createElement('div');
+ startBtnDiv.classList.add('startBtnDiv');
+ main.insertAdjacentElement('afterbegin',startBtnDiv);
+
+ //create a button
+ let startBtn = document.createElement('button');
+ startBtn.textContent='Start Game';
+ startBtn.classList.add('startBtn');
+ startBtnDiv.insertAdjacentElement('afterbegin',startBtn);
+
+ startScreen = document.querySelector('.startScreen');
+ startBtn.addEventListener('click',()=>{  
+  //startScreen.classList.add('hidden');
+  startBtn.classList.add('hidden');
+  startGame();
+ });
+}
+function startGame(){ 
+ let section = document.createElement('section');
+ aside = document.createElement('aside');
+ aside.classList.add('rightPanel');
+ contentDiv = document.createElement('div');
+ contentDiv.classList.add('content');
+ 
+ main.insertAdjacentElement('afterbegin',section);
+ section.insertAdjacentElement('afterbegin',contentDiv);
+ section.insertAdjacentElement('afterend',aside);
+ drawMatrix();//draw main matrix 
+/************* */
 drawToolsAndInventory();
 row_idArray= [...document.querySelectorAll(`[data-id]`)];//all tiles in an array
 console.log(row_idArray);
@@ -60,38 +99,7 @@ drawTree(treeStart02);
 drawCloud();
 drawRocks();
 handleInventory();
-/******END***OF***FUNCTIONS**************/
-
-
-function startPage(){
- main.classList.add('startScreen');
- let startBtnDiv = document.createElement('div');
- startBtnDiv.classList.add('startBtnDiv');
- main.insertAdjacentElement('afterbegin',startBtnDiv);
-
- let startBtn = document.createElement('button');
- startBtn.textContent='Start Game';
- startBtn.classList.add('startBtn');
- startBtnDiv.insertAdjacentElement('afterbegin',startBtn);
-
- startBtn.addEventListener('click',()=>{
-  startBtnDiv.classList.add('hidden');
-  startBtn.classList.add('hidden');
-  startGame();
- });
-}
-function startGame(){ 
- let section = document.createElement('section');
- aside = document.createElement('aside');
- aside.classList.add('rightPanel');
- //let contentDiv = document.createElement('div');
- contentDiv = document.createElement('div');
- contentDiv.classList.add('content');
- 
- main.insertAdjacentElement('afterbegin',section);
- section.insertAdjacentElement('afterbegin',contentDiv);
- section.insertAdjacentElement('afterend',aside);
- drawMatrix();//draw main matrix 
+/********* */
 }
 function drawToolsAndInventory(){
  inventoryDiv = document.createElement('div');
@@ -122,7 +130,7 @@ function drawToolsAndInventory(){
  resetBtn.value ='Reset World';
  resetBtn.classList.add('resetBtn');
  resetDiv.insertAdjacentElement('afterbegin',resetBtn);
- //resetBtn.addEventListener('click', console.log('reset'));
+ //resetBtn.addEventListener('click', startPage);
 }
 function drawMatrix(){
  let k=599;
@@ -191,13 +199,28 @@ function drawTree(root){ //let treeStart = 187;
   console.log('You cannot plant a tree there');
  }
 }//drawTree
-function drawRocks(){//rockStart =205
- if(rockStart>=181 && rockStart <=207){
-  for(let i=rockStart; i<=rockStart+numberOfRocks-1; i++){
-   row_idArray[numOfTiles-i].classList.add('rock');
-   row_idArray[numOfTiles-i].setAttribute('data-type','rock');
+function drawRocks(){
+ //debugger;
+ for(let j=1; j<=maxNumberOfRocks; j++){
+  let rockStart = Math.floor(Math.random() * (208 - 181) + 181);  
+  if(rockStart>=181 && rockStart <=207 && rockStart != treeStart01 && rockStart != treeStart02){
+   if(row_idArray[rockStart].dataset.type == undefined){
+    for(let i=rockStart; i==rockStart; i++){
+     row_idArray[numOfTiles-i].classList.add('rock');
+     row_idArray[numOfTiles-i].setAttribute('data-type','rock');
+    }
+   }else{
+    rockStart-=1;
+    row_idArray[numOfTiles-rockStart].classList.add('rock');
+    row_idArray[numOfTiles-rockStart].setAttribute('data-type','rock');
+   }
   } 
- } 
+ }
+ //const rocks
+ row_idArray[numOfTiles-210].classList.add('rock');
+ row_idArray[numOfTiles-210].setAttribute('data-type','rock');
+ row_idArray[numOfTiles-240].classList.add('rock');
+ row_idArray[numOfTiles-240].setAttribute('data-type','rock');
 }//drawRocks
 function handleInventory(){
  tools.forEach(tool => allTools.push(tool.name));

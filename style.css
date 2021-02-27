@@ -67,7 +67,7 @@ body{
  margin-top: 160px;
 }
 .hidden{
- visibility: hidden;
+ display: none;
 }
 .resetDiv{
  width: 50px;
