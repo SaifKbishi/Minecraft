@@ -17,6 +17,8 @@ let tileNumber;
 let tilesInInventory =[1];
 let toolInHand={};
 let inventoryClasses;
+//let selectedTileIndex;
+//let selectedTileParent;
 /********end of global variables **************/
 
 /********Inventory**************/
@@ -37,6 +39,7 @@ let tools=[
   inHand: 0
  }
 ];
+let tileTypes =['wood','leaves','grass','soil','rock'];
 /*****END***Of***Inventory**************/
 
 /********FUNCTIONS**************/
@@ -51,9 +54,7 @@ drawGrass();
 drawTree();
 drawCloud();
 drawRocks();
-
 handleInventory();
-
 /******END***OF***FUNCTIONS**************/
 
 
@@ -74,7 +75,6 @@ function startPage(){
   startGame();
  });
 }
-
 function startGame(){ 
  let section = document.createElement('section');
  aside = document.createElement('aside');
@@ -88,11 +88,11 @@ function startGame(){
  section.insertAdjacentElement('afterend',aside);
  drawMatrix();//draw main matrix
 }
-
 function drawToolsAndInventory(){
  inventoryDiv = document.createElement('div');
  aside.insertAdjacentElement('afterbegin',inventoryDiv);
- inventoryDiv.classList.add('inventoryDiv','inventoryTile'); 
+ inventoryDiv.classList.add('inventoryDiv','inventoryTile');
+ //inventoryDiv.setAttribute('data-type','tileInInv');
 
  let pickaxeDiv = document.createElement('div');
  pickaxeDiv.classList.add('pickaxe','toolsTile');
@@ -112,10 +112,7 @@ function drawToolsAndInventory(){
  let resetDiv = document.createElement('div');
  aside.insertAdjacentElement('afterbegin',resetDiv);
  resetDiv.classList.add('resetDiv');
-
-
 }
-
 function drawMatrix(){
  let k=599;
  let aTile;
@@ -132,26 +129,22 @@ function drawMatrix(){
    //aTile.setAttribute('data-row_id',`${(i+1)}`);
    aTile.setAttribute('data-col_id',`${(j+1)}`);
    aTile.innerText= k;
-   aTile.setAttribute('data-id',`${k--}`);
-   
+   aTile.setAttribute('data-id',`${k--}`);   
   }
  } 
 }
-
 function drawSoil(){ 
  for(let i=(numOfTiles-150); i<row_idArray.length;i++){
   row_idArray[i].classList.add('soil');
   row_idArray[i].setAttribute('data-type','soil');
  } 
 }
-
 function drawGrass(){
  for(let i=(numOfTiles-180); i<(numOfTiles-150);i++){
   row_idArray[i].classList.add('grass');
   row_idArray[i].setAttribute('data-type','grass');
  }
 }
-
 function drawCloud(){
  row_idArray[numOfTiles-530].classList.add('cloud');
  for(let i=(numOfTiles-502); i<=(numOfTiles-499);i++){
@@ -162,7 +155,6 @@ function drawCloud(){
   row_idArray[i].setAttribute('data-type','cloud');
  }
 }
-
 function drawTree(){ //let treeStart = 187;
  if(treeStart>=182 && treeStart <=209){
   //draw treelog
@@ -187,7 +179,6 @@ function drawTree(){ //let treeStart = 187;
   console.log('You cannot plant a tree there');
  }
 }
-
 function drawRocks(){//rockStart =205
  if(rockStart>=181 && rockStart <=207){
   for(let i=rockStart; i<=rockStart+2; i++){
@@ -196,7 +187,6 @@ function drawRocks(){//rockStart =205
   } 
  } 
 }
-
 function handleInventory(){ 
  tools.forEach(tool => allTools.push(tool.name));
  document.querySelector(".rightPanel").addEventListener('click',(e)=>{
@@ -211,16 +201,26 @@ function handleInventory(){
      tool.inHand =1;
      //toolInHand = tool.name;
      toolInHand = tool;
-     console.log(tool.name+' can move ', tool.usedFor,tool.inHand );
+     //console.log(tool.name+' can move ', tool.usedFor,tool.inHand );
     }
    });   
   }
-  //here maybe
+  //if tileInInv includes any type of tiles
+  if(tileTypes.includes((e.target.dataset.type))){   
+   console.log('now you can use this tile');
+   //remove the tile from inventory
+   //document.querySelector('.inventoryTile').setAttribute('data-type',e.target.dataset.type);
+   console.log('tilesInInventory: ',tilesInInventory);
+   document.querySelector('.inventoryTile').classList.remove(e.target.dataset.type);
+   document.querySelector('.inventoryTile').removeAttribute('data-type');
+   //now we have tile in hand and we can place it in the world
+   moveATileBackToWorld();
+  }
  });
-}
+}//handleInventory
 
 function removeATile(){
- document.querySelector('.content').addEventListener('click',(e)=>{     
+ document.querySelector('.content').addEventListener('click',(e)=>{
   //console.log(`row: ${e.target.dataset.row_id}`,`col: ${e.target.dataset.col_id}`);
   tileNumber = `${e.target.dataset.id}`;
   console.log('tileNumber:',tileNumber);
@@ -230,22 +230,24 @@ function removeATile(){
    console.log('we have a tool in hand and a tile that we can move');
    //check if we can remove the tile (nothing above it)
    //canRemoveTile(e);
-   let tileIndex = e.target.dataset.col_id;
+   let selectedTileIndex = e.target.dataset.col_id;
    let selectedTileParent = e.target.parentElement;
    let rowAboveSelecedTile = selectedTileParent.previousElementSibling;
-   //console.log('col index: ', tileIndex );
-   //console.log(rowAboveSelecedTile.children[30-tileIndex]);
-   let tileAboveType = rowAboveSelecedTile.children[30-tileIndex].dataset.type;
+   //console.log('col index: ', selectedTileIndex );
+   //console.log(rowAboveSelecedTile.children[30-selectedTileIndex]);
+   let tileAboveType = rowAboveSelecedTile.children[30-selectedTileIndex].dataset.type;
    if(tileAboveType == undefined){
     console.log('you can remove this tile');
     e.target.classList.remove(e.target.dataset.type);
      if(tilesInInventory.length >=1){ //update inventory
       console.log('tilesInInventory: ',tilesInInventory);
       inventoryDiv.classList.remove(tilesInInventory[0]);
-      tilesInInventory.pop();
+      tilesInInventory.pop(); //empty inventory if it contains anything
       tilesInInventory.push(e.target.dataset.type);
       console.log('tilesInInventory:',tilesInInventory);
       document.querySelector('.inventoryTile').classList.add(e.target.dataset.type);
+      document.querySelector('.inventoryTile').setAttribute('data-type',e.target.dataset.type);
+      //moveATileBackToWorld();
      }
    }else{
     console.log('you CANNOT remove this tile');
@@ -256,27 +258,25 @@ function removeATile(){
  }); 
 }//removeATile
 
-/*
-function canRemoveTile(e){
- let tileIndex = e.target.dataset.col_id;
- let selectedTileParent = e.target.parentElement;
- let rowAboveSelecedTile = selectedTileParent.previousElementSibling;
- //console.log('col index: ', tileIndex );
- //console.log(rowAboveSelecedTile.children[30-tileIndex]);
- let tileAboveType = rowAboveSelecedTile.children[30-tileIndex].dataset.type;
- if(tileAboveType == undefined){
-  console.log('you can remove this tile');
-  e.target.classList.remove(e.target.dataset.type);
-   if(tilesInInventory.length >=1){ //update inventory
-    console.log('tilesInInventory: ',tilesInInventory);
-    inventoryDiv.classList.remove(tilesInInventory[0]);
-    tilesInInventory.pop();
-    tilesInInventory.push(e.target.dataset.type);
-    console.log('tilesInInventory:',tilesInInventory);
-    document.querySelector('.inventoryTile').classList.add(e.target.dataset.type);
-   }
- }else{
-  console.log('you CANNOT remove this tile');
-  //need to implement animation for a tile to blink
- }
-}*/
+function moveATileBackToWorld(){
+ 
+ let tileInHand = tilesInInventory.pop();
+ console.log('tileInHand: ',tileInHand);
+ document.querySelector('.content').addEventListener('click',(e)=>{
+  //debugger;
+  let selectedTileIndex = e.target.dataset.col_id; //the tile index
+  let selectedTileParent = e.target.parentElement; //the selected tile parent
+  let rowBelowSelecedTile = selectedTileParent.nextElementSibling;
+  let tileBelowType = rowBelowSelecedTile.children[30-selectedTileIndex].dataset.type;
+  if(tileInHand && tileBelowType!= undefined){
+   e.target.classList.add(tileInHand);
+   e.target.setAttribute('data-type',tileInHand);
+   tileInHand ='';
+   //removeATile();
+   //handleInventory();
+  }
+ });
+ return;
+}
+removeATile();
+handleInventory();

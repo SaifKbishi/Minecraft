@@ -17,4 +17,4 @@
 //function to place an item from inventory in the world  
 //responsive design  
 //function to reset the game  
-//
+//function to animate 
