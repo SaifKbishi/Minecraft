@@ -4,8 +4,12 @@ const numOfTiles =600;
 const worldHeightInTiles = 20;
 const worldWidthtInTiles = 30;
 const headOfCloud = 530;
-const treeStart = 183; //must be between tile 182 && 209
-const rockStart = 198; //must be between tiles 181 && 207
+//const treeStart01 = 183; //must be between tile 182 && 209
+//const treeStart02 = 195; //must be between tile 182 && 209
+const treeStart01 = Math.floor(Math.random() * (195 - 182) + 182);
+const treeStart02 = Math.floor(Math.random() * (209 - 196) + 196);
+const rockStart = Math.floor(Math.random() * (209 - 181) + 181); //198; //must be between tiles 181 && 207
+const numberOfRocks = 3;
 
 let contentDiv;
 let inventoryDiv;
@@ -51,7 +55,8 @@ console.log(row_idArray);
 removeATile();
 drawSoil();
 drawGrass();
-drawTree();
+drawTree(treeStart01);
+drawTree(treeStart02);
 drawCloud();
 drawRocks();
 handleInventory();
@@ -86,7 +91,7 @@ function startGame(){
  main.insertAdjacentElement('afterbegin',section);
  section.insertAdjacentElement('afterbegin',contentDiv);
  section.insertAdjacentElement('afterend',aside);
- drawMatrix();//draw main matrix
+ drawMatrix();//draw main matrix 
 }
 function drawToolsAndInventory(){
  inventoryDiv = document.createElement('div');
@@ -112,6 +117,12 @@ function drawToolsAndInventory(){
  let resetDiv = document.createElement('div');
  aside.insertAdjacentElement('afterbegin',resetDiv);
  resetDiv.classList.add('resetDiv');
+ let resetBtn = document.createElement('input'); 
+ resetBtn.type = 'button';
+ resetBtn.value ='Reset World';
+ resetBtn.classList.add('resetBtn');
+ resetDiv.insertAdjacentElement('afterbegin',resetBtn);
+ //resetBtn.addEventListener('click', console.log('reset'));
 }
 function drawMatrix(){
  let k=599;
@@ -128,7 +139,7 @@ function drawMatrix(){
    aTile = document.querySelector('.tile');
    //aTile.setAttribute('data-row_id',`${(i+1)}`);
    aTile.setAttribute('data-col_id',`${(j+1)}`);
-   aTile.innerText= k;
+   //aTile.innerText= k;
    aTile.setAttribute('data-id',`${k--}`);   
   }
  } 
@@ -138,13 +149,13 @@ function drawSoil(){
   row_idArray[i].classList.add('soil');
   row_idArray[i].setAttribute('data-type','soil');
  } 
-}
+}//drawSoil
 function drawGrass(){
  for(let i=(numOfTiles-180); i<(numOfTiles-150);i++){
   row_idArray[i].classList.add('grass');
   row_idArray[i].setAttribute('data-type','grass');
  }
-}
+}//drawGrass
 function drawCloud(){
  row_idArray[numOfTiles-530].classList.add('cloud');
  for(let i=(numOfTiles-502); i<=(numOfTiles-499);i++){
@@ -154,8 +165,9 @@ function drawCloud(){
   row_idArray[i].classList.add('cloud');
   row_idArray[i].setAttribute('data-type','cloud');
  }
-}
-function drawTree(){ //let treeStart = 187;
+}//drawCloud
+function drawTree(root){ //let treeStart = 187;
+ let treeStart = root;
  if(treeStart>=182 && treeStart <=209){
   //draw treelog
   for(let i=treeStart; i<=treeStart+60; i+=30){
@@ -178,15 +190,15 @@ function drawTree(){ //let treeStart = 187;
  }else{
   console.log('You cannot plant a tree there');
  }
-}
+}//drawTree
 function drawRocks(){//rockStart =205
  if(rockStart>=181 && rockStart <=207){
-  for(let i=rockStart; i<=rockStart+2; i++){
+  for(let i=rockStart; i<=rockStart+numberOfRocks-1; i++){
    row_idArray[numOfTiles-i].classList.add('rock');
    row_idArray[numOfTiles-i].setAttribute('data-type','rock');
   } 
  } 
-}
+}//drawRocks
 function handleInventory(){
  tools.forEach(tool => allTools.push(tool.name));
  document.querySelector(".rightPanel").addEventListener('click',(e)=>{
@@ -282,4 +294,4 @@ function moveATileBackToWorld(){
    //handleInventory();
   }
  });
-}
+}//moveATileBackToWorld
