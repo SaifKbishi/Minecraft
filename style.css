@@ -38,7 +38,11 @@ body{
  display: flex;
  flex-direction: row;
 }
-
+.tutorialDiv{
+ text-align: center;
+ font-size: 14px;
+ margin-bottom: 30px;
+}
 
 .startScreen{
  background: url('images/Backgrounds.jpg') no-repeat center center/cover;
@@ -51,7 +55,8 @@ body{
 }
 .startBtnDiv{ 
  display: flex;
- justify-content: center;
+ justify-content: space-between;
+ flex-direction: column;
  align-items: center;
  align-content: center;
  height: 100vh; 
@@ -59,7 +64,7 @@ body{
 .startBtn{
  justify-content: center;
  align-items: center;
- margin-top: 320px;
+ margin-top: 80px; /*320px;*/
  font-size: 2rem;
 }
 .hidden{
@@ -123,7 +128,9 @@ body{
 .wood{
  background: url('images/wood.png') no-repeat center center/cover;
 }
-
+.wrongTool{
+ border: 3px solid red;
+}
 
 
 

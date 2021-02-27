@@ -8,6 +8,7 @@ const treeStart01 = Math.floor(Math.random() * (195 - 182) + 182);
 const treeStart02 = Math.floor(Math.random() * (209 - 196) + 196);
 const maxNumberOfRocks = 4;
 
+let startBtnDiv;
 let contentDiv;
 let inventoryDiv;
 let aside;
@@ -59,7 +60,7 @@ handleInventory();*/
 
 function startPage(){
  main.classList.add('startScreen');
- let startBtnDiv = document.createElement('div');
+ startBtnDiv = document.createElement('div');
  startBtnDiv.classList.add('startBtnDiv');
  main.insertAdjacentElement('afterbegin',startBtnDiv);
 
@@ -68,6 +69,20 @@ function startPage(){
  startBtn.textContent='Start Game';
  startBtn.classList.add('startBtn');
  startBtnDiv.insertAdjacentElement('afterbegin',startBtn);
+ //create tutorial div
+ let tutorialDiv = document.createElement('div');
+ tutorialDiv.classList.add('tutorialDiv');
+ tutorialDiv.innerHTML= `<p>
+ This is MineCraft Game<br>
+ You have the world on the left, which includes tiles of <i>Leaves</i>,<i> Wood</i>,<i> Rock</i>,<i> Grass</i>,<i> Soil</i><br>
+ and on the right, you have the tools that you can use to move remove tiles from the world and place them on the inventory. One tile at a time.<br>
+ You can use the Shovel for <i>Grass</i> and <i>Soil</i>.<br>
+ You can use the Axe for <i>Leaves</i> and <i>Wood</i>.<br>
+ You can use the Pickaxe for <i>Rock</i>.<br>
+ Most important, you <strong>CANNOT</strong> use any tool for anything else besides its purpose.
+</p>`;
+ startBtn.insertAdjacentElement('afterend',tutorialDiv);
+
 
  startScreen = document.querySelector('.startScreen');
  startBtn.addEventListener('click',()=>{  
@@ -77,6 +92,9 @@ function startPage(){
  });
 }
 function startGame(){ 
+ //remove elements from start page
+ startBtnDiv.classList.add('hidden');
+
  let section = document.createElement('section');
  aside = document.createElement('aside');
  aside.classList.add('rightPanel');
@@ -290,11 +308,15 @@ function removeATile(){
     console.log('you CANNOT remove this tile');
     //need to implement animation for a tile to blink
    }
-   e.target.removeAttribute('data-type');//15:57
+   e.target.removeAttribute('data-type');
   }else{
    //debugger;
    console.log('you CANNOT remove this tile with this tool');
-   console.log(toolInHand.name);
+   /*console.log(toolInHand.name);
+   let pickedToolFromInventory = document.querySelector(".toolsTileClicked");
+   console.log('pickedToolFromInventory: ',pickedToolFromInventory, 'typeOf: ',typeof(pickedToolFromInventory));
+   pickedToolFromInventory.classList.toogle('wrongTool');*/
+
   }
  }); 
 }//removeATile
