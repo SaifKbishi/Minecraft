@@ -4,24 +4,26 @@ const numOfTiles =600;
 const worldHeightInTiles = 20;
 const worldWidthtInTiles = 30;
 const headOfCloud = 530;
-const treeStart = 183;
-const rockStart = 198;
+const treeStart = 183; //must be between tile 182 && 209
+const rockStart = 198; //must be between tiles 181 && 207
 
 let contentDiv;
+let inventoryDiv;
 let aside;
 let rightPanel;
-let row_idArray=[];//the array
+let row_idArray=[];//array of all tiles
+let allTools =[];
 let tileNumber;
 let tilesInInventory =[1];
-let toolInHand;
-
+let toolInHand={};
+let inventoryClasses;
 /********end of global variables **************/
 
 /********Inventory**************/
 let tools=[
  {
   name: 'axe',
-  usedFor:['trees','leaves'],
+  usedFor:['wood','leaves'],
   inHand: 0
  },
  {
@@ -41,14 +43,17 @@ let tools=[
 //startPage(); should be enabled by default
 startGame();
 drawToolsAndInventory();
-getArray_info();
+row_idArray= [...document.querySelectorAll(`[data-id]`)];//all tiles in an array
+console.log(row_idArray);
+removeATile();
 drawSoil();
 drawGrass();
 drawTree();
 drawCloud();
 drawRocks();
-removeATile();
+
 handleInventory();
+
 /******END***OF***FUNCTIONS**************/
 
 
@@ -85,10 +90,10 @@ function startGame(){
 }
 
 function drawToolsAndInventory(){
- let inventoryDiv = document.createElement('div');
+ inventoryDiv = document.createElement('div');
  aside.insertAdjacentElement('afterbegin',inventoryDiv);
- inventoryDiv.classList.add('inventoryDiv','inventoryTile');
- 
+ inventoryDiv.classList.add('inventoryDiv','inventoryTile'); 
+
  let pickaxeDiv = document.createElement('div');
  pickaxeDiv.classList.add('pickaxe','toolsTile');
  aside.insertAdjacentElement('afterbegin',pickaxeDiv);
@@ -107,6 +112,8 @@ function drawToolsAndInventory(){
  let resetDiv = document.createElement('div');
  aside.insertAdjacentElement('afterbegin',resetDiv);
  resetDiv.classList.add('resetDiv');
+
+
 }
 
 function drawMatrix(){
@@ -188,64 +195,60 @@ function drawRocks(){//rockStart =205
  } 
 }
 
-
-function removeATile(){
- document.querySelector('.content').addEventListener('click',(e)=>{     //log the row and col
-  //console.log(`row: ${e.target.dataset.row_id}`,`col: ${e.target.dataset.col_id}`);  
-  //console.log(`${e.target.dataset.id}`);
-  //console.log(`${e.target.classList}`);
-  let DT = `${e.target.dataset.type}`;
-  let TType =`${e.target.classList}`;
-  //console.log('TType:',TType, 'TType type: ',typeof(TType)); //TType is  string
- });
-}
-
-function handleInventory(){
- let allTools =[];
+function handleInventory(){ 
  tools.forEach(tool => allTools.push(tool.name));
  document.querySelector(".rightPanel").addEventListener('click',(e)=>{
   console.log(e.target.dataset.type + ' is picked');  
   if(allTools.includes(e.target.dataset.type) ){
-   //debugger;
-   deSelectOtherTools(e);
+   /* Unselect other tools and update tool in hand */
+   e.target.parentElement.childNodes.forEach(div => div.classList.remove('toolsTileClicked'));
+   tools.forEach(tool => {tool.inHand =0;});
    e.target.classList.toggle('toolsTileClicked');   
-   tools.forEach(tool => {   //update the toll in hand
+   tools.forEach(tool => {   //update the tool in hand
     if(tool.name === e.target.dataset.type){
      tool.inHand =1;
+     //toolInHand = tool.name;
+     toolInHand = tool;
      console.log(tool.name+' can move ', tool.usedFor,tool.inHand );
     }
    });   
-  }  
+  }
+  //here maybe
  });
 }
-function deSelectOtherTools(e){ 
- e.target.parentElement.childNodes.forEach(div => div.classList.remove('toolsTileClicked'));
- tools.forEach(tool => {tool.inHand =0;});
- 
-}
 
-
-let shovel = 1;
 /*insert all tiles in an array and event listener */
-function getArray_info(){
- document.querySelector('.content').addEventListener('click',(e)=>{     //log the row and col
-  //console.log(`row: ${e.target.dataset.row_id}`,`col: ${e.target.dataset.col_id}`);  
- console.log(e.target.dataset.type+ ' clicked');
-
-  if(shovel && e.target.classList.contains('grass')){  //removing Grass
-   e.target.classList.remove('grass');
-   console.log('grass tile is removed from getArray_info');
-   if(tilesInInventory.length >=1){
-    tilesInInventory.pop();
-    tilesInInventory.push('grass');
-    console.log('tilesInInventory:',tilesInInventory);
-   }
-  } //removing Grass - END
-
-
+function removeATile(){
+ document.querySelector('.content').addEventListener('click',(e)=>{     
+  //console.log(`row: ${e.target.dataset.row_id}`,`col: ${e.target.dataset.col_id}`);
   tileNumber = `${e.target.dataset.id}`;
   console.log('tileNumber:',tileNumber);
+  console.log(e.target.dataset.type+ ' clicked');
+  //if tile has type && tool in Hand can remove it
+  if(e.target.dataset.type && toolInHand.usedFor.includes(e.target.dataset.type)){
+   console.log('we have a tool in hand and a tile that we can move');
+   //check if we can remove the tile (nothing above it)
+   //console.log(`the tile Number: ${ Number(tileNumber)} has above it: ${Number(tileNumber)-30} `);   
+debugger;
+   if((row_idArray[Number(tileNumber)-30]).dataset.type === ''){
+    console.log(`the tile Number: ${ Number(tileNumber)} has above it: ${Number(tileNumber)-30} `);  
+
+   }
+   e.target.classList.remove(e.target.dataset.type);
+   if(tilesInInventory.length >=1){ //update inventory
+    console.log('tilesInInventory: ',tilesInInventory);
+    inventoryDiv.classList.remove(tilesInInventory[0]);
+    tilesInInventory.pop();
+    tilesInInventory.push(e.target.dataset.type);
+    console.log('tilesInInventory:',tilesInInventory);
+    document.querySelector('.inventoryTile').classList.add(e.target.dataset.type);
+   }
+  }
  }); 
- row_idArray= [...document.querySelectorAll(`[data-id]`)];//all tiles in an array
- console.log(row_idArray);
+ //row_idArray= [...document.querySelectorAll(`[data-id]`)];//all tiles in an array
+ //console.log(row_idArray);
+}
+
+function canRemoveTile(){
+
 }
