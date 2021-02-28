@@ -3,6 +3,7 @@ const main = document.querySelector('.main');
 const numOfTiles =600;
 const worldHeightInTiles = 20;
 const worldWidthtInTiles = 30;
+const tilesInARow = worldWidthtInTiles;
 const headOfCloud = 530;
 //const treeStart01 = Math.floor(Math.random() * (195 - 182) + 182);
 //const treeStart02 = Math.floor(Math.random() * (209 - 196) + 196);

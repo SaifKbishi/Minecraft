@@ -19,3 +19,15 @@
 //function to reset the game  
 //function to animate
 //randomize rocks and trees
+
+
+
+
+/*******things to improve********/
+//i should used an object for all tools and tiles, and iterate through them dynamically
+//i should use const for arrays
+//i should have linked all cloud tills together make it an object
+//link all tree tiles togther as an object
+//clean code that is not used
+//eventListeners callback functions in seprate function
+// use  ``
