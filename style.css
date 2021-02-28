@@ -134,7 +134,19 @@ body{
 
 
 
-
+@media (max-width: 768px) {
+ .resetDiv{
+  min-width: 68px;
+ }
+ .resetBtn{
+  font-size: 10px;
+ }
+ .toolsTile{
+  width: 90%;
+  margin: 5%;
+  background-size: 70px;
+ }
+}
 
 /*responsive*/
 @media (max-width: 400px) {
@@ -151,8 +163,15 @@ body{
   height: 50px;
  }
  .resetDiv,.toolsTile,.inventoryTile{
-  width: 25px;
+  width: 50px;
   margin: 7px;
+ }
+ .inventoryTile{
+  height: 35px;
+ }
+ .toolsTile{
+  min-height: 40px;
+  background-size: 35px;
  }
  .tile{
   height: 4.99vh;
