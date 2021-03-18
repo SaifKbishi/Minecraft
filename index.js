@@ -5,8 +5,6 @@ const worldHeightInTiles = 20;
 const worldWidthtInTiles = 30;
 const tilesInARow = worldWidthtInTiles;
 const headOfCloud = 530;
-//const treeStart01 = Math.floor(Math.random() * (195 - 182) + 182);
-//const treeStart02 = Math.floor(Math.random() * (209 - 196) + 196);
 const maxNumberOfRocks = 4;
 
 let startBtnDiv;
@@ -48,17 +46,6 @@ let tileTypes =['wood','leaves','grass','soil','rock'];
 /********FUNCTIONS**************/
 startPage(); //should be enabled by default
 //startGame();
-/*drawToolsAndInventory();
-row_idArray= [...document.querySelectorAll(`[data-id]`)];//all tiles in an array
-console.log(row_idArray);
-removeATile();
-drawSoil();
-drawGrass();
-drawTree(treeStart01);
-drawTree(treeStart02);
-drawCloud();
-drawRocks();
-handleInventory();*/
 /******END***OF***FUNCTIONS**************/
 
 function startPage(){
@@ -212,12 +199,19 @@ function drawTree(root){
    row_idArray[numOfTiles-i].classList.add('leaves');
    row_idArray[numOfTiles-i].setAttribute('data-type','leaves');
   }
-  for(let i=treeStart+89; i<=treeStart+91; i++){
+  drawOneTile(89,91, 'leaves');
+  /*for(let i=treeStart+89; i<=treeStart+91; i++){
    row_idArray[numOfTiles-i].classList.add('leaves');
    row_idArray[numOfTiles-i].setAttribute('data-type','leaves');
-  } 
+  }*/
  }else{
   console.log('You cannot plant a tree there');
+ }
+ function drawOneTile(si, ei, tileType){
+  for(let i=treeStart+si; i<=treeStart+ei; i++){
+    row_idArray[numOfTiles-i].classList.add(tileType);
+    row_idArray[numOfTiles-i].setAttribute('data-type',tileType);
+   }
  }
 }//drawTree
 function drawRocks(){
